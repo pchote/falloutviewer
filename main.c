@@ -40,7 +40,7 @@ void extract_file(dat2reader *reader, char *entry_name, char *filename)
         return;
     }
 
-    fwrite(data, sizeof(uint8_t), e->uncompressed_size, outfile);
+    fwrite(data, sizeof(uint8_t), e->compressed_size, outfile);
     fclose(outfile);
 
     free(data);
@@ -52,8 +52,8 @@ int main(int argc, char **argv)
     if (!reader)
         return 1;
 
-    print_entry_table(reader);
-    extract_file(reader, "sound\\Speech\\HRLD2\\HLD11B.TXT", "extracted.dat");
+    //print_entry_table(reader);
+    extract_file(reader, "data\\WORLDMAP.TXT", "WORLDMAP.TXT");
     dat2reader_close(reader);
     return 0;
 }

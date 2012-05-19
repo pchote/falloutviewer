@@ -33,8 +33,6 @@ typedef struct dat2reader
 
     uint32_t entry_count;
     dat2entry *entries;
-
-    uint8_t *data;
 } dat2reader;
 
 dat2reader *dat2reader_open(char *path);

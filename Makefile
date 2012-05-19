@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -g -c -Wall -Wno-unknown-pragmas --std=c99
 LFLAGS = 
 
-SRC = main.c dat2reader.c
+SRC = main.c dat2reader.c tinfl.c
 OBJ = $(SRC:.c=.o)
 
 falloutviewer: $(OBJ)

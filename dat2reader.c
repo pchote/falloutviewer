@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <string.h>
 #include "dat2reader.h"
+#include "tinfl.h"
 
 //
 // Open a Fallout 2 dat file and cache the file entries
@@ -130,13 +131,6 @@ uint8_t *dat2entry_extract_data(dat2entry *entry)
     if (!entry->reader)
         return NULL;
 
-    // TODO: support compressed entries
-    if (entry->compressed)
-    {
-        fprintf(stderr, "Compressed entries are currently unsupported\n");
-        return NULL;
-    }
-
     if (fseek(entry->reader->file, entry->offset, SEEK_SET))
     {
         fprintf(stderr, "Error: %s\n", strerror(errno));
@@ -150,12 +144,48 @@ uint8_t *dat2entry_extract_data(dat2entry *entry)
         return NULL;
     }
 
-    size_t read = fread(data, sizeof(uint8_t), entry->uncompressed_size, entry->reader->file);
-    if (read != entry->uncompressed_size)
+    if (!entry->compressed)
     {
-        fprintf(stderr, "Extracted file length mismatch\n");
-        free(data);
-        return NULL;
+        // Uncompressed data - read directly into output buffer
+        size_t read = fread(data, sizeof(uint8_t), entry->uncompressed_size, entry->reader->file);
+        if (read != entry->uncompressed_size)
+        {
+            fprintf(stderr, "Extracted file length mismatch\n");
+            free(data);
+            return NULL;
+        }
+    }
+    else
+    {
+        // Compressed data - read into a temporary buffer, then decompress into output buffer
+        uint8_t *compressed_data = malloc(entry->uncompressed_size*sizeof(uint8_t));
+        if (!compressed_data)
+        {
+            fprintf(stderr, "Malloc error: %s\n", strerror(errno));
+            free(data);
+            return NULL;
+        }
+
+        size_t read = fread(compressed_data, sizeof(uint8_t), entry->compressed_size, entry->reader->file);
+        if (read != entry->compressed_size)
+        {
+            fprintf(stderr, "Extracted file length mismatch\n");
+            free(data);
+            free(compressed_data);
+            return NULL;
+        }
+
+        // Decompress
+        if (tinfl_decompress_mem_to_mem(data, entry->uncompressed_size, compressed_data, entry->compressed_size,
+            TINFL_FLAG_PARSE_ZLIB_HEADER | TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF) == TINFL_DECOMPRESS_MEM_TO_MEM_FAILED)
+        {
+            printf("decompression failed\n");
+            free(data);
+            free(compressed_data);
+            return NULL;
+        }
+
+        free(compressed_data);
     }
 
     return data;
