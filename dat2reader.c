@@ -177,7 +177,7 @@ uint8_t *dat2entry_extract_data(dat2entry *entry)
 
         // Decompress
         if (tinfl_decompress_mem_to_mem(data, entry->uncompressed_size, compressed_data, entry->compressed_size,
-            TINFL_FLAG_PARSE_ZLIB_HEADER | TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF) == TINFL_DECOMPRESS_MEM_TO_MEM_FAILED)
+            TINFL_FLAG_PARSE_ZLIB_HEADER) == TINFL_DECOMPRESS_MEM_TO_MEM_FAILED)
         {
             printf("decompression failed\n");
             free(data);

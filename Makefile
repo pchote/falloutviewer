@@ -1,9 +1,9 @@
 
 CC = gcc
-CFLAGS = -g -c -Wall -Wno-unknown-pragmas --std=c99
-LFLAGS = 
+CFLAGS = -g -c -Wall -Wno-unknown-pragmas --std=c99 `pkg-config libpng --cflags`
+LFLAGS = `pkg-config libpng --libs`
 
-SRC = main.c dat2reader.c tinfl.c
+SRC = main.c dat2reader.c frmreader.c tinfl.c png.c
 OBJ = $(SRC:.c=.o)
 
 falloutviewer: $(OBJ)
