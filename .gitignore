@@ -1,1 +1,6 @@
+*.o
+falloutviewer
+.DS_Store
+*.xcuserstate
 *.png
+*.dat
