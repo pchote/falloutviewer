@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:main.c">
+   </FileRef>
+   <FileRef
+      location = "group:dat2reader.c">
+   </FileRef>
+   <FileRef
+      location = "group:dat2reader.h">
+   </FileRef>
+   <FileRef
+      location = "group:palreader.c">
+   </FileRef>
+   <FileRef
+      location = "group:palreader.h">
+   </FileRef>
+   <FileRef
+      location = "group:frmreader.c">
+   </FileRef>
+   <FileRef
+      location = "group:frmreader.h">
+   </FileRef>
+   <FileRef
+      location = "group:Makefile">
+   </FileRef>
+   <FileRef
+      location = "group:tinfl.c">
+   </FileRef>
+   <FileRef
+      location = "group:tinfl.h">
+   </FileRef>
+</Workspace>
