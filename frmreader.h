@@ -3,7 +3,7 @@
 //
 //
 //  Created by Paul Chote on 20/05/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012. All rights reserved.
 //
 
 #ifndef _frmreader_h
